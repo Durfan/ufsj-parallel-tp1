@@ -65,8 +65,10 @@ int main(int argc, char **argv) {
     end = MPI_Wtime();
 
     if (rank == ROOT) {
-        printf("Runtime: %fs\n", end - start);
+        double runtime = end - start;
+        printf("Runtime: %fs\n", runtime);
         saveData(data, n);
+        saveTime(size, runtime);
     }
 
     if (data)

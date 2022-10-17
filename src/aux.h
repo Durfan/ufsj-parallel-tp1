@@ -1,6 +1,9 @@
+#include <time.h>
+
 int getNLines(const char *file);
 void getData(const char *file, int *array);
 void saveData(int *array, int size);
+void saveTime(int size, double runtime);
 
 int getNLines(const char *file) {
     FILE *fp = fopen(file, "r");
@@ -56,6 +59,20 @@ void saveData(int *array, int size) {
 
     for (int i = 0; i < size; i++)
         fprintf(fp, "%d\n", array[i]);
+
+    fclose(fp);
+}
+
+void saveTime(int size, double runtime) {
+    const char *file = "times.txt";
+    FILE *fp = fopen(file, "a+");
+    if (fp == NULL) {
+        perror("Erro ao criar arquivo.");
+        exit(EXIT_FAILURE);
+    }
+
+    unsigned long now = time(NULL);
+    fprintf(fp, "%lu %d %f\n", now, size, runtime);
 
     fclose(fp);
 }
