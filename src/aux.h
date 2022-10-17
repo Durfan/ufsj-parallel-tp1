@@ -64,7 +64,7 @@ void saveData(int *array, int size) {
 }
 
 void saveTime(int size, double runtime) {
-    const char *file = "times.txt";
+    const char *file = "times.log";
     FILE *fp = fopen(file, "a+");
     if (fp == NULL) {
         perror("Erro ao criar arquivo.");
