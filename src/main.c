@@ -1,8 +1,9 @@
 #define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "aux.h"
 
 #define ROOT 0
@@ -31,8 +32,7 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-    int nlines;
-    int chunk;
+    int n, chunk;
     int *data = NULL;
     int *chunkData = NULL;
 
@@ -44,9 +44,9 @@ int main(int argc, char **argv) {
     }
 
     if (rank == ROOT) {
-        nlines = getNLines(argv[1]);
-        chunk = nlines / size;
-        data = calloc(nlines, sizeof(int));
+        n = getNLines(argv[1]);
+        chunk = n / size;
+        data = calloc(n, sizeof(int));
         getData(argv[1], data);
     }
 
@@ -66,11 +66,13 @@ int main(int argc, char **argv) {
 
     if (rank == ROOT) {
         printf("Runtime: %fs\n", end - start);
-        saveData(data, nlines);
+        saveData(data, n);
     }
-    free(data);
-    free(chunkData);
 
+    if (data)
+        free(data);
+    free(chunkData);
     MPI_Finalize();
+
     return 0;
 }

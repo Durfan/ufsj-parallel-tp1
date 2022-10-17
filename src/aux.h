@@ -9,20 +9,20 @@ int getNLines(const char *file) {
         exit(EXIT_FAILURE);
     }
 
-    int nlines = 0;
+    int n = 0;
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
 
     while ((read = getline(&line, &len, fp)) != -1) {
         if (line[0] != '\n')
-            nlines++;
+            n++;
     }
 
     if (line)
         free(line);
     fclose(fp);
-    return nlines;
+    return n;
 }
 
 void getData(const char *file, int *array) {
