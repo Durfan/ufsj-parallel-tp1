@@ -1,6 +1,6 @@
 TARGET = tp1
-PROCESS_COUNT = 2
-GCC_FLAGS = -Wall -g -lm
+PROCESS_COUNT = 4
+GCC_FLAGS = -Wall -g -lm -fopenmp
 
 RUN_OPTIONS = --use-hwthread-cpus
 #RUN_OPTIONS = -np ${PROCESS_COUNT}

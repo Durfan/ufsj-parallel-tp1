@@ -1,25 +1,30 @@
 #define _GNU_SOURCE
 #include <math.h>
 #include <mpi.h>
+#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "aux.h"
 
 #define ROOT 0
+#define NUM_THREADS 4
 
 void totalDivs(int *array, int size) {
     int number, divisor, k;
+    int sqrtNumber;
+#pragma omp parallel for num_threads(NUM_THREADS) private(number, divisor, k, sqrtNumber)
     for (int i = 0; i < size; i++) {
         number = array[i];
-        k = divisor = 2;
-        while (divisor <= sqrt(number)) {
+        k = 2;
+        sqrtNumber = sqrt(number);
+#pragma omp parallel for num_threads(NUM_THREADS) reduction(+:k)
+        for (divisor = 2; divisor <= sqrtNumber; divisor++) {
             if (number % divisor == 0) {
                 k++;
                 if (divisor != (number / divisor))
                     k++;
             }
-            divisor++;
         }
         array[i] = k;
     }
